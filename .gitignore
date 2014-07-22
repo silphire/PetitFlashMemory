@@ -1,0 +1,8 @@
+bin/
+gen/
+.settings/
+.classpath
+.project
+*.class
+*.apk
+*.ap_
