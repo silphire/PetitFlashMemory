@@ -74,16 +74,32 @@ public class ProblemSet {
 		return this.title;
 	}
 	
+	public void setTitle(String title) {
+		this.title = title;
+	}
+	
 	public String getCreator() {
 		return this.creator;
+	}
+	
+	public void setCreator(String creator) {
+		this.creator = creator;
 	}
 	
 	public Date getCreatedDate() {
 		return this.createdDate;
 	}
 	
+	public void setCreatedDate(Date createdDate) {
+		this.createdDate = createdDate;
+	}
+	
 	public List<Problem> getProblemList() {
 		return this.problemList;
+	}
+	
+	public void setProblemList(List<Problem> problemList) {
+		this.problemList = problemList;
 	}
 	
 	public ProblemSet() {
