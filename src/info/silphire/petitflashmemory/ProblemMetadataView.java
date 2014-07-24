@@ -1,6 +1,10 @@
 package info.silphire.petitflashmemory;
 
+import java.text.DateFormat;
+import java.util.Locale;
+
 import android.content.Context;
+import android.text.method.DateTimeKeyListener;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -55,7 +59,8 @@ public class ProblemMetadataView extends TableLayout {
 		creator.setText(problemSet.getCreator());
 		
 		TextView createdDate = (TextView) layout.findViewById(R.id.createdDate);
-		createdDate.setText(problemSet.getCreatedDate().toString());	// TODO ロケールに応じた表現を取得できるようにすること
+		DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.FULL, Locale.getDefault());
+		createdDate.setText(dateFormat.format(problemSet.getCreatedDate()));	// TODO ロケールに応じた表現を取得できるようにすること
 		
 		TextView numProblems = (TextView) layout.findViewById(R.id.numProblems);
 		numProblems.setText(String.valueOf(problemSet.getProblemList().size()));
