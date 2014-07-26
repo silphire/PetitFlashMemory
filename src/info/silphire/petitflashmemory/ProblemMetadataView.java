@@ -59,8 +59,8 @@ public class ProblemMetadataView extends TableLayout {
 		creator.setText(problemSet.getCreator());
 		
 		TextView createdDate = (TextView) layout.findViewById(R.id.createdDate);
-		DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.FULL, Locale.getDefault());
-		createdDate.setText(dateFormat.format(problemSet.getCreatedDate()));	// TODO ƒƒP[ƒ‹‚É‰‚¶‚½•\Œ»‚ğæ“¾‚Å‚«‚é‚æ‚¤‚É‚·‚é‚±‚Æ
+		DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.SHORT, Locale.getDefault());
+		createdDate.setText(dateFormat.format(problemSet.getCreatedDate()));
 		
 		TextView numProblems = (TextView) layout.findViewById(R.id.numProblems);
 		numProblems.setText(String.valueOf(problemSet.getProblemList().size()));
