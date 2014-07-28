@@ -21,6 +21,7 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.LinearLayout;
 
 /**
  * 
@@ -96,27 +97,43 @@ public class MainActivity extends ActionBarActivity {
 	/**
 	 * 架空の問題を表示します (テスト用)
 	 */
-	protected ProblemSet GetSampleProblems() {
-		ProblemSet problemSet = new ProblemSet();
+	protected List<ProblemSet> GetSampleProblems() {
+		List<ProblemSet> listOfProblemSet = new ArrayList<ProblemSet>();
+		ProblemSet problemSet;
+
+		for(int i = 0; i < 20; ++i) {
+			problemSet = new ProblemSet();
+			problemSet.setTitle("*** SAMPLE " + i + " ***");
+			problemSet.setCreator("John Doe " + i);
+			problemSet.setCreatedDate(new Date());
+			problemSet.setProblemList(new ArrayList<Problem>());
+			listOfProblemSet.add(problemSet);
+		}
 		
-		problemSet.setTitle("*** SAMPLE ***");
-		problemSet.setCreator("John Doe");
+		problemSet = new ProblemSet();
+		problemSet.setTitle("テスト");
+		problemSet.setCreator("名無しの権兵衛");
 		problemSet.setCreatedDate(new Date());
 		problemSet.setProblemList(new ArrayList<Problem>());
+		listOfProblemSet.add(problemSet);
 		
-		return problemSet;
+		return listOfProblemSet;
 	}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
-		// TODO implement 問題一覧を取得してmetadataを画面にリストビューで表示する
-		ProblemSet problemSet = GetSampleProblems();
-		ProblemMetadataView view = new ProblemMetadataView(problemSet, this, null);
-		setContentView(view);
+		setContentView(R.layout.activity_main);
 		
-		// setContentView(R.layout.activity_main);
+		// TODO implement 問題一覧を取得してmetadataを画面にリストビューで表示する
+		List<ProblemSet> listOfProblemSet = GetSampleProblems();
+		LinearLayout metadataList = (LinearLayout) findViewById(R.id.metadata_list);
+		metadataList.removeAllViews();
+		for(ProblemSet problemSet : listOfProblemSet) {
+			ProblemMetadataView view = new ProblemMetadataView(problemSet, this, null);
+			metadataList.addView(view);
+		}
 	}
 
 	@Override
