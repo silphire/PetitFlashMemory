@@ -1,5 +1,7 @@
 package info.silphire.petitflashmemory;
 
+import info.silphire.petitflashmemory.PreferenceActivity.ThePreferenceFragment;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -15,6 +17,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.xml.sax.SAXException;
 
 import android.support.v7.app.ActionBarActivity;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -150,6 +153,7 @@ public class MainActivity extends ActionBarActivity {
 		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
 		if (id == R.id.action_settings) {
+			startActivityForResult(new Intent(this, PreferenceActivity.class), 0);
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
