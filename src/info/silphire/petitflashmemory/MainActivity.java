@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -69,13 +70,20 @@ public class MainActivity extends ActionBarActivity {
 		return listProblemSet;
 	}
 	
+	/**
+	 * 
+	 * ファイルから問題を読み込んで返します
+	 * 
+	 * @param file
+	 * @return
+	 */
 	protected ProblemSet readOneProblemSet(File file) {
 		FileInputStream stream = null;
 		try {
 			stream = new FileInputStream(file);
 		} catch(FileNotFoundException e) {
 			// ファイルが無い場合は単に無視して次を処理する
-			Log.d(Constants.LOG_TAG, "File not found -- " + file.getPath());
+			Log.d(Constants.LOG_TAG, e.getLocalizedMessage());
 			return null;
 		}
 		
@@ -85,7 +93,7 @@ public class MainActivity extends ActionBarActivity {
 		} catch (IllegalFormatException | SAXException | IOException
 				| ParserConfigurationException | ParseException e) {
 			// parse出来ないのならば、無視して次に行くだけ。
-			Log.d(Constants.LOG_TAG, "Failed to parse problem set -- " + file.getParent());
+			Log.d(Constants.LOG_TAG, e.getLocalizedMessage());
 		}
 		
 		try {
@@ -129,8 +137,23 @@ public class MainActivity extends ActionBarActivity {
 		
 		setContentView(R.layout.activity_main);
 		
-		// TODO implement 問題一覧を取得してmetadataを画面にリストビューで表示する
-		List<ProblemSet> listOfProblemSet = GetSampleProblems();
+		// List<ProblemSet> listOfProblemSet = GetSampleProblems();
+		List<ProblemSet> listOfProblemSet = GetProblems();
+		if(listOfProblemSet == null || listOfProblemSet.isEmpty()) {
+			Log.d(Constants.LOG_TAG, "Cannot read from drive. Create sample problems");
+			
+			listOfProblemSet = GetSampleProblems();
+			for(ProblemSet problemSet : listOfProblemSet) {
+				try {
+					OutputStream stream = this.openFileOutput(System.currentTimeMillis() + ".xml", 0);
+					problemSet.dumpToXml(stream);
+					stream.close();
+				} catch(IOException e) {
+					Log.e(Constants.LOG_TAG, e.getLocalizedMessage());
+				}
+			}
+		}
+		
 		LinearLayout metadataList = (LinearLayout) findViewById(R.id.metadata_list);
 		metadataList.removeAllViews();
 		for(ProblemSet problemSet : listOfProblemSet) {

@@ -1,5 +1,9 @@
 package info.silphire.petitflashmemory;
 
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.util.IllegalFormatException;
 import java.util.List;
 
@@ -56,5 +60,32 @@ public class Problem {
 
 	public void setChoice(List<String> choice) {
 		this.choice = choice;
+	}
+	
+	public void dumpToXml(OutputStream stream, int nIndent) throws IOException {
+		BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(stream));
+		
+		StringBuilder prefixBuilder = new StringBuilder();
+		for(int i = 0; i < nIndent; ++i) {
+			prefixBuilder.append(' ');
+		}
+		String prefix = prefixBuilder.toString();
+		
+		writer.write(prefix);
+		writer.write("<problem>\n");
+		
+		writer.write(prefix);
+		writer.write("  <statement>" + this.getStatement() + "</statement>\n");
+		
+		for(String choice : this.getChoice()) {
+			writer.write(prefix);
+			writer.write("  <choice>" + choice + "</choice>\n");
+		}
+		
+		writer.write(prefix);
+		writer.write("</problem>\n");
+		
+		writer.write("\n");
+		writer.flush();
 	}
 }

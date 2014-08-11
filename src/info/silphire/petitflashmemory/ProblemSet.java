@@ -1,7 +1,10 @@
 package info.silphire.petitflashmemory;
 
+import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -214,5 +217,37 @@ public class ProblemSet {
 		}
 		
 		return node.getTextContent();
+	}
+	
+	public void dumpToXml(OutputStream stream) throws IOException {
+		BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(stream));
+		
+		writer.write("<?xml version=\"1.0\" encoding=\"utf-8\">\n");
+		writer.write("<flashmemory xml:lang=\"ja\" xmlns:dc=\"http://purl.org/dc/elements/1.1/\"\n");
+		writer.write("  <metadata>\n");
+		if(this.title != null && !this.title.isEmpty()) {
+			writer.write("    <dc:title>" + this.title + "</dc:title>\n");
+		}
+		if(this.creator != null && !this.creator.isEmpty()) {
+			writer.write("    <dc:creator>" + this.creator + "</dc:creator>\n");
+		}
+		if(this.createdDate != null) {
+			writer.write("    <dc:createdDate>" + this.createdDate.toString() + "</dc:createdDate>\n");
+		}
+		writer.write("  </metadata>\n");
+		
+		if(this.problemList != null && !this.problemList.isEmpty()) {
+			writer.write("  <problemset>\n");
+			
+			writer.flush();
+			for(Problem problem : this.problemList) {
+				problem.dumpToXml(stream, 4);
+			}
+			writer.flush();
+			
+			writer.write("  </problemset>\n");
+		}
+		writer.write("</flashmemory>\n");
+		writer.flush();
 	}
 }
