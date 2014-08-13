@@ -21,8 +21,12 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import android.view.GestureDetector;
+import android.view.GestureDetector.OnGestureListener;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
+import android.view.View;
 import android.widget.LinearLayout;
 
 /**
@@ -155,7 +159,58 @@ public class MainActivity extends ActionBarActivity {
 		LinearLayout metadataList = (LinearLayout) findViewById(R.id.metadata_list);
 		metadataList.removeAllViews();
 		for(ProblemSet problemSet : listOfProblemSet) {
-			ProblemMetadataView view = new ProblemMetadataView(problemSet, this, null);
+			final ProblemMetadataView view = new ProblemMetadataView(problemSet, this, null);
+			view.setOnTouchListener(new View.OnTouchListener() {
+				private final GestureDetector gestureDetector = new GestureDetector(view.getContext(), new OnGestureListener() {
+					@Override
+					public boolean onDown(MotionEvent e) {
+						// TODO Auto-generated method stub
+						return false;
+					}
+
+					@Override
+					public boolean onFling(MotionEvent e1, MotionEvent e2,
+							float velocityX, float velocityY) {
+						// TODO Auto-generated method stub
+						return false;
+					}
+
+					@Override
+					public void onLongPress(MotionEvent e) {
+						// TODO メタデータの詳細を表示する
+						ProblemSet problemSet = view.getProblemSet();
+						Intent intent = new Intent(MainActivity.this, MetadataDescriptionActivity.class);
+						startActivity(intent);
+					}
+
+					@Override
+					public boolean onScroll(MotionEvent e1, MotionEvent e2,
+							float distanceX, float distanceY) {
+						return false;
+					}
+
+					@Override
+					public void onShowPress(MotionEvent e) {
+						// TODO Auto-generated method stub
+						
+					}
+
+					@Override
+					public boolean onSingleTapUp(MotionEvent e) {
+						// 出題を開始
+						ProblemSet problemSet = view.getProblemSet();
+						Intent intent = new Intent(MainActivity.this, QuestionActivity.class);
+						startActivity(intent);
+						return true;
+					}
+				});
+				
+				@Override
+				public boolean onTouch(View view, MotionEvent event) {
+					this.gestureDetector.onTouchEvent(event);
+					return view.performClick();
+				}
+			});
 			metadataList.addView(view);
 		}
 	}

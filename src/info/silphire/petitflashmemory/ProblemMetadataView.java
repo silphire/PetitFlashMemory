@@ -4,12 +4,7 @@ import java.text.DateFormat;
 import java.util.Locale;
 
 import android.content.Context;
-import android.text.method.DateTimeKeyListener;
 import android.util.AttributeSet;
-import android.util.Log;
-import android.view.GestureDetector;
-import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TableLayout;
 import android.widget.TextView;
@@ -31,7 +26,10 @@ import android.widget.TextView;
  */
 public class ProblemMetadataView extends TableLayout {
 	private ProblemSet problemSet;
-	private GestureDetector gestureDetector;
+
+	public ProblemSet getProblemSet() {
+		return this.problemSet;
+	}
 	
 	public void setProblemSet(ProblemSet problemSet) {
 		this.problemSet = problemSet;
@@ -69,47 +67,5 @@ public class ProblemMetadataView extends TableLayout {
 		// 右寄せにしているつもりなのになっていないので、どうにかしたい。
 		TextView numProblems = (TextView) layout.findViewById(R.id.numProblems);
 		numProblems.setText(String.valueOf(problemSet.getProblemList().size()));
-		
-		// GestureDetectorのセットアップ
-		gestureDetector = new GestureDetector(getContext(), new GestureDetector.OnGestureListener() {
-			@Override
-			public boolean onSingleTapUp(MotionEvent e) {
-				// TODO: タッチされたら出題をする。QuestionActivityに飛ぶ。
-				Log.d(Constants.LOG_TAG, "START LESSON: <" + ProblemMetadataView.this.problemSet.getTitle() + ">");
-				return true;
-			}
-			
-			@Override
-			public void onShowPress(MotionEvent e) {
-			}
-			
-			@Override
-			public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX,
-					float distanceY) {
-				return false;
-			}
-			
-			@Override
-			public void onLongPress(MotionEvent e) {
-				// TODO: 長押しされた場合はメタデータの詳細を表示する。
-			}
-			
-			@Override
-			public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX,
-					float velocityY) {
-				return false;
-			}
-			
-			@Override
-			public boolean onDown(MotionEvent e) {
-				return false;
-			}
-		});
-	}
-	
-	@Override
-	public boolean onTouchEvent(MotionEvent event) {
-		gestureDetector.onTouchEvent(event);
-		return true;
 	}
 }
