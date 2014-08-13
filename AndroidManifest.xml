@@ -29,6 +29,10 @@
             android:name=".QuestionActivity"
             android:label="@string/title_activity_question" >
         </activity>
+        <activity
+            android:name=".MetadataDescriptionActivity"
+            android:label="@string/title_activity_metadata_description" >
+        </activity>
     </application>
 
 </manifest>

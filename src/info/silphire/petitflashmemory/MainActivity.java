@@ -1,7 +1,5 @@
 package info.silphire.petitflashmemory;
 
-import info.silphire.petitflashmemory.PreferenceActivity.ThePreferenceFragment;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
