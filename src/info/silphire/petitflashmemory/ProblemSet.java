@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -40,7 +41,9 @@ import android.util.Log;
  * @author Yuki Mitsui <silphire@gmail.com>
  * 
  */
-public class ProblemSet {
+public class ProblemSet implements Serializable {
+	private static final long serialVersionUID = 8661999289018304965L;
+	
 	private String title;
 	private String creator;
 	private Date createdDate;

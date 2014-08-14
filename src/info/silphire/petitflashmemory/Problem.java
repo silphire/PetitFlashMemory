@@ -4,6 +4,7 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.io.Serializable;
 import java.util.IllegalFormatException;
 import java.util.List;
 
@@ -26,7 +27,9 @@ import org.w3c.dom.Node;
  * @author Yuki Mitsui <silphire@gmail.com>
  * 
  */
-public class Problem {
+public class Problem implements Serializable {
+	private static final long serialVersionUID = -5505052151717124082L;
+	
 	private String statement;
 	private List<String> choice;
 	
