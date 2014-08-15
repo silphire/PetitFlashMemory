@@ -155,7 +155,8 @@ public class MainActivity extends ActionBarActivity {
 				}
 			}
 		}
-		
+
+		// 問題のmetadataをLinearLayoutの中に流し込む
 		LinearLayout metadataList = (LinearLayout) findViewById(R.id.metadata_list);
 		metadataList.removeAllViews();
 		for(ProblemSet problemSet : listOfProblemSet) {
@@ -164,22 +165,20 @@ public class MainActivity extends ActionBarActivity {
 				private final GestureDetector gestureDetector = new GestureDetector(view.getContext(), new OnGestureListener() {
 					@Override
 					public boolean onDown(MotionEvent e) {
-						// TODO Auto-generated method stub
 						return false;
 					}
 
 					@Override
 					public boolean onFling(MotionEvent e1, MotionEvent e2,
 							float velocityX, float velocityY) {
-						// TODO Auto-generated method stub
 						return false;
 					}
 
 					@Override
 					public void onLongPress(MotionEvent e) {
 						// TODO メタデータの詳細を表示する
-						ProblemSet problemSet = view.getProblemSet();
 						Intent intent = new Intent(MainActivity.this, MetadataDescriptionActivity.class);
+						intent.putExtra("problemSet", view.getProblemSet());
 						startActivity(intent);
 					}
 
@@ -191,16 +190,14 @@ public class MainActivity extends ActionBarActivity {
 
 					@Override
 					public void onShowPress(MotionEvent e) {
-						// TODO Auto-generated method stub
-						
 					}
 
 					@Override
 					public boolean onSingleTapUp(MotionEvent e) {
 						// 出題を開始
-						ProblemSet problemSet = view.getProblemSet();
 						Intent intent = new Intent(MainActivity.this, QuestionActivity.class);
-						startActivity(intent);
+						intent.putExtra("problemSet", view.getProblemSet());
+						MainActivity.this.startActivity(intent);
 						return true;
 					}
 				});

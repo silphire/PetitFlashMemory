@@ -64,7 +64,7 @@ public class ProblemSet implements Serializable {
 		}
 
 		@Override
-		public Iterator getPrefixes(String namespaceURI) {
+		public Iterator<String> getPrefixes(String namespaceURI) {
 			// TODO Auto-generated method stub
 			return null;
 		}
