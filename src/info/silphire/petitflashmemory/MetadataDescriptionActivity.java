@@ -3,6 +3,7 @@ package info.silphire.petitflashmemory;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.TextView;
 
 /**
@@ -19,7 +20,18 @@ public class MetadataDescriptionActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		
 		Intent intent = getIntent();
+		if(intent == null) {
+			Log.d(Constants.LOG_TAG, "Cannot obtain Intent object");
+			this.finish();
+			return;
+		}
+		
 		ProblemSet problemSet = (ProblemSet)intent.getSerializableExtra("problemSet");
+		if(problemSet == null) {
+			Log.d(Constants.LOG_TAG, "Cannot obtain associated ProblemSet");
+			this.finish();
+			return;
+		}
 		
 		TextView title = (TextView) findViewById(R.id.metadeta_desc_title);
 		title.setText(problemSet.getTitle());

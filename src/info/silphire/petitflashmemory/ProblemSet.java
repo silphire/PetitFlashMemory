@@ -13,7 +13,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.IllegalFormatException;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 
 import javax.xml.namespace.NamespaceContext;
@@ -47,9 +46,9 @@ public class ProblemSet implements Serializable {
 	private String title;
 	private String creator;
 	private Date createdDate;
-	private List<Problem> problemList;
+	private ArrayList<Problem> problemList;
 	
-	private final NamespaceContext nsContext = new NamespaceContext() {
+	private static final NamespaceContext nsContext = new NamespaceContext() {
 		private final Map<String, String> nsMap = new HashMap<String, String>() {
 			private static final long serialVersionUID = 3673785369003896310L;
 			
@@ -100,11 +99,11 @@ public class ProblemSet implements Serializable {
 		this.createdDate = createdDate;
 	}
 	
-	public List<Problem> getProblemList() {
+	public ArrayList<Problem> getProblemList() {
 		return this.problemList;
 	}
 	
-	public void setProblemList(List<Problem> problemList) {
+	public void setProblemList(ArrayList<Problem> problemList) {
 		this.problemList = problemList;
 	}
 	
@@ -150,6 +149,7 @@ public class ProblemSet implements Serializable {
 			return;
 		}
 		
+		// TODO IMPLEMENT
 		for(int i = 0; i < nodeList.getLength(); ++i) {
 			Node nodeProblem = nodeList.item(i);
 			Problem problem = new Problem();

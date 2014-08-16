@@ -51,6 +51,7 @@ public class ProblemMetadataView extends TableLayout {
 	 */
 	public ProblemMetadataView(ProblemSet problemSet, Context context, AttributeSet attrs) {
 		super(context, attrs);
+		this.setProblemSet(problemSet);
 
 		View layout = inflate(context, R.layout.problem_metadata, this);
 		
