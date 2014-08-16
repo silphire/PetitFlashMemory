@@ -19,6 +19,8 @@ public class MetadataDescriptionActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
+		setContentView(R.layout.activity_metadata_description);
+		
 		Intent intent = getIntent();
 		if(intent == null) {
 			Log.d(Constants.LOG_TAG, "Cannot obtain Intent object");
@@ -41,7 +43,5 @@ public class MetadataDescriptionActivity extends Activity {
 		
 		TextView createdDate = (TextView) findViewById(R.id.metadeta_desc_created_date);
 		createdDate.setText(problemSet.getCreatedDate().toString());	// TODO きちんとフォーマットを整える
-		
-		setContentView(R.layout.activity_metadata_description);
 	}
 }
