@@ -165,7 +165,7 @@ public class MainActivity extends ActionBarActivity {
 				private final GestureDetector gestureDetector = new GestureDetector(view.getContext(), new OnGestureListener() {
 					@Override
 					public boolean onDown(MotionEvent e) {
-						return false;
+						return true;
 					}
 
 					@Override
@@ -179,7 +179,7 @@ public class MainActivity extends ActionBarActivity {
 						// TODO メタデータの詳細を表示する
 						Intent intent = new Intent(MainActivity.this, MetadataDescriptionActivity.class);
 						intent.putExtra("problemSet", view.getProblemSet());
-						startActivity(intent);
+						MainActivity.this.startActivity(intent);
 					}
 
 					@Override
@@ -204,8 +204,9 @@ public class MainActivity extends ActionBarActivity {
 				
 				@Override
 				public boolean onTouch(View view, MotionEvent event) {
+					view.performClick();
 					this.gestureDetector.onTouchEvent(event);
-					return view.performClick();
+					return false;
 				}
 			});
 			metadataList.addView(view);
