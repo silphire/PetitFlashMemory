@@ -47,6 +47,7 @@ public class ProblemSet implements Serializable {
 	private String creator;
 	private Date createdDate;
 	private ArrayList<Problem> problemList;
+	private String path;
 	
 	private static final NamespaceContext nsContext = new NamespaceContext() {
 		private final Map<String, String> nsMap = new HashMap<String, String>() {
@@ -105,6 +106,14 @@ public class ProblemSet implements Serializable {
 	
 	public void setProblemList(ArrayList<Problem> problemList) {
 		this.problemList = problemList;
+	}
+	
+	public String getPath() {
+		return this.path;
+	}
+	
+	public void setPath(String path) {
+		this.path = path;
 	}
 	
 	public ProblemSet() {

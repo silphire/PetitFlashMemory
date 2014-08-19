@@ -53,7 +53,7 @@ public class MainActivity extends ActionBarActivity {
 		if(problemPath == null) {
 			// Preferenceから規定のディレクトリの設定が読み込めない場合
 			for(String file : this.fileList()) {
-				ProblemSet problemSet = readOneProblemSet(new File(file));
+				ProblemSet problemSet = readOneProblemSet(file);
 				if(problemSet != null) {
 					listProblemSet.add(problemSet);
 				}
@@ -62,7 +62,7 @@ public class MainActivity extends ActionBarActivity {
 			// 規定のディレクトリの場所が分かった場合
 			File problemDirObj = new File(problemPath);
 			for(File f : problemDirObj.listFiles()) {
-				ProblemSet problemSet = readOneProblemSet(f);
+				ProblemSet problemSet = readOneProblemSet(f.getPath());
 				if(problemSet != null) {
 					listProblemSet.add(problemSet);
 				}
@@ -79,23 +79,25 @@ public class MainActivity extends ActionBarActivity {
 	 * @param file
 	 * @return
 	 */
-	protected ProblemSet readOneProblemSet(File file) {
+	protected ProblemSet readOneProblemSet(String file) {
 		FileInputStream stream = null;
 		try {
-			stream = new FileInputStream(file);
+			stream = this.openFileInput(file);
+			// stream = new FileInputStream(file);
 		} catch(FileNotFoundException e) {
 			// ファイルが無い場合は単に無視して次を処理する
-			Log.d(Constants.LOG_TAG, e.getLocalizedMessage());
+			Log.d(Constants.LOG_TAG, "readOneProblemSet() -- " + e.getLocalizedMessage());
 			return null;
 		}
 		
 		ProblemSet problemSet = new ProblemSet();
+		problemSet.setPath(file);
 		try {
 			problemSet.parseMetadata(stream);
 		} catch (IllegalFormatException | SAXException | IOException
 				| ParserConfigurationException | ParseException e) {
 			// parse出来ないのならば、無視して次に行くだけ。
-			Log.d(Constants.LOG_TAG, e.getLocalizedMessage());
+			Log.d(Constants.LOG_TAG, "readOneProblemSet() Parse Failed -- " + e.getLocalizedMessage());
 		}
 		
 		try {
@@ -124,6 +126,7 @@ public class MainActivity extends ActionBarActivity {
 		}
 		
 		problemSet = new ProblemSet();
+		problemSet.setPath("sample_" + System.currentTimeMillis() + ".xml");
 		problemSet.setTitle("テスト");
 		problemSet.setCreator("名無しの権兵衛");
 		problemSet.setCreatedDate(new Date());
@@ -143,11 +146,19 @@ public class MainActivity extends ActionBarActivity {
 		List<ProblemSet> listOfProblemSet = GetProblems();
 		if(listOfProblemSet == null || listOfProblemSet.isEmpty()) {
 			Log.d(Constants.LOG_TAG, "Cannot read from drive. Create sample problems");
+
+			// サンプルを作る前に、今保存してある問題を全て削除する。 (debug用)
+			/*
+			for(String file : this.fileList()) {
+				Log.d(Constants.LOG_TAG, "DELETE FILE -- " + file);
+				this.deleteFile(file);
+			}
+			*/
 			
 			listOfProblemSet = GetSampleProblems();
 			for(ProblemSet problemSet : listOfProblemSet) {
 				try {
-					OutputStream stream = this.openFileOutput(System.currentTimeMillis() + ".xml", 0);
+					OutputStream stream = this.openFileOutput(problemSet.getPath(), 0);
 					problemSet.dumpToXml(stream);
 					stream.close();
 				} catch(IOException e) {
