@@ -142,18 +142,18 @@ public class MainActivity extends ActionBarActivity {
 		
 		setContentView(R.layout.activity_main);
 		
-		// List<ProblemSet> listOfProblemSet = GetSampleProblems();
-		List<ProblemSet> listOfProblemSet = GetProblems();
+		List<ProblemSet> listOfProblemSet = GetSampleProblems();
+		//List<ProblemSet> listOfProblemSet = GetProblems();
 		if(listOfProblemSet == null || listOfProblemSet.isEmpty()) {
 			Log.d(Constants.LOG_TAG, "Cannot read from drive. Create sample problems");
 
 			// サンプルを作る前に、今保存してある問題を全て削除する。 (debug用)
-			/*
+			//*
 			for(String file : this.fileList()) {
 				Log.d(Constants.LOG_TAG, "DELETE FILE -- " + file);
 				this.deleteFile(file);
 			}
-			*/
+			//*/
 			
 			listOfProblemSet = GetSampleProblems();
 			for(ProblemSet problemSet : listOfProblemSet) {
