@@ -13,6 +13,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.IllegalFormatException;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import javax.xml.namespace.NamespaceContext;
@@ -122,6 +124,12 @@ public class ProblemSet implements Serializable {
 	
 	/**
 	 * 問題をInputStreamから解析します。
+	 * 
+	 * <problem>
+	 *   <statement></statement>
+	 *   <choice></choice>
+	 * </statement>
+	 * 
 	 * @throws ParserConfigurationException 
 	 * @throws IOException 
 	 * @throws SAXException 
@@ -158,10 +166,34 @@ public class ProblemSet implements Serializable {
 			return;
 		}
 		
-		// TODO IMPLEMENT
+		// 問題を取得できるので、1問ずつparseして保存。
 		for(int i = 0; i < nodeList.getLength(); ++i) {
 			Node nodeProblem = nodeList.item(i);
 			Problem problem = new Problem();
+
+			for(int j = 0; j < nodeProblem.getChildNodes().getLength(); ++j) {
+				Node nodeText = nodeProblem.getChildNodes().item(j);
+				switch(nodeText.getNodeName()) {
+				case "statement":
+					if(problem.getStatement() == null) {
+						problem.setStatement(nodeText.getTextContent());
+					} else {
+						// 既に<statement>は過去に存在している
+						// エラーを出すことも考えたけど、単純に無視するようにする。最初に現れた<statement>のみが有効。
+					}
+					break;
+				case "choice":
+					List<String> choice = problem.getChoice();
+					if(choice.isEmpty()) {
+						choice = new ArrayList<String>();
+					}
+					choice.add(nodeText.getTextContent());
+					problem.setChoice(choice);
+				default:
+					// 知らないノードは単純に無視する
+					break;
+				}
+			}
 		}
 	}
 	
@@ -197,7 +229,7 @@ public class ProblemSet implements Serializable {
 		XPath xpath = XPathFactory.newInstance().newXPath();
 		xpath.setNamespaceContext(nsContext);
 		
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:MM:SSX");
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:MM:SSX", Locale.getDefault());
 		
 		this.creator = parseMetadataElement("//problem/metadata/dc:creator", document, xpath);
 		this.title = parseMetadataElement("//problem/metadata/dc:title", document, xpath);
