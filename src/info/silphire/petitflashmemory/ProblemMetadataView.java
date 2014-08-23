@@ -69,4 +69,9 @@ public class ProblemMetadataView extends TableLayout {
 		TextView numProblems = (TextView) layout.findViewById(R.id.numProblems);
 		numProblems.setText(String.valueOf(problemSet.getProblemList().size()));
 	}
+	
+	@Override
+	public boolean performClick() {
+		return super.performClick();
+	}
 }

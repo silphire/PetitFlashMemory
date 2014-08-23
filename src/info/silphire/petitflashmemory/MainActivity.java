@@ -76,7 +76,7 @@ public class MainActivity extends ActionBarActivity {
 	 * 
 	 * ファイルから問題を読み込んで返します
 	 * 
-	 * @param file
+	 * @param file 読み込む問題のXMLファイルのファイル名
 	 * @return
 	 */
 	protected ProblemSet readOneProblemSet(String file) {
@@ -155,7 +155,7 @@ public class MainActivity extends ActionBarActivity {
 			}
 			//*/
 			
-			listOfProblemSet = GetSampleProblems();
+			listOfProblemSet = GetSampleProblems();		// サンプルを利用する場合はこちら
 			for(ProblemSet problemSet : listOfProblemSet) {
 				try {
 					OutputStream stream = this.openFileOutput(problemSet.getPath(), 0);
@@ -173,6 +173,7 @@ public class MainActivity extends ActionBarActivity {
 		for(ProblemSet problemSet : listOfProblemSet) {
 			final ProblemMetadataView view = new ProblemMetadataView(problemSet, this, null);
 			view.setOnTouchListener(new View.OnTouchListener() {
+				// 以下の匿名クラスは問題一覧の中から、ある問題がタッチされた時の挙動を示す。
 				private final GestureDetector gestureDetector = new GestureDetector(view.getContext(), new OnGestureListener() {
 					@Override
 					public boolean onDown(MotionEvent e) {
