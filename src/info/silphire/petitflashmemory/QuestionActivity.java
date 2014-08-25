@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.ViewFlipper;
 
 /**
  * 問題を出題していくアクティビティクラス
@@ -32,6 +33,6 @@ public class QuestionActivity extends Activity {
 			return;
 		}
 
-		;
+		ViewFlipper questionFlipper = (ViewFlipper) findViewById(R.id.question_flipper);
 	}
 }
