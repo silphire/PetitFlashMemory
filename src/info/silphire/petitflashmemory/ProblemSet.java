@@ -1,6 +1,7 @@
 package info.silphire.petitflashmemory;
 
 import java.io.BufferedWriter;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -140,61 +141,8 @@ public class ProblemSet implements Serializable {
 	public void parse(InputStream stream) throws SAXException, IOException, ParserConfigurationException, IllegalFormatException, ParseException {
 		Document document = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(stream);
 		
-		// メタデータを取得しておく
 		this.parseMetadata(document);
-		
-		this.problemList = new ArrayList<Problem>();
-		
-		XPath xpath = XPathFactory.newInstance().newXPath();
-		xpath.setNamespaceContext(nsContext);
-		
-		XPathExpression xpExpression = null;
-		try {
-			xpExpression = xpath.compile("//problem/problemset/problem");
-		} catch (XPathExpressionException e) {
-			// 問題は1つも取得できなかったという事にする
-			Log.d(Constants.LOG_TAG, "Caught XPathExpressionException, continues");
-			return;
-		}
-		
-		NodeList nodeList = null;
-		try {
-			nodeList = (NodeList)xpExpression.evaluate(document, XPathConstants.NODESET);
-		} catch (XPathExpressionException e) {
-			// 問題は1つも取得できなかった
-			Log.d(Constants.LOG_TAG, "Not found any problem element");
-			return;
-		}
-		
-		// 問題を取得できるので、1問ずつparseして保存。
-		for(int i = 0; i < nodeList.getLength(); ++i) {
-			Node nodeProblem = nodeList.item(i);
-			Problem problem = new Problem();
-
-			for(int j = 0; j < nodeProblem.getChildNodes().getLength(); ++j) {
-				Node nodeText = nodeProblem.getChildNodes().item(j);
-				switch(nodeText.getNodeName()) {
-				case "statement":
-					if(problem.getStatement() == null) {
-						problem.setStatement(nodeText.getTextContent());
-					} else {
-						// 既に<statement>は過去に存在している
-						// エラーを出すことも考えたけど、単純に無視するようにする。最初に現れた<statement>のみが有効。
-					}
-					break;
-				case "choice":
-					List<String> choice = problem.getChoice();
-					if(choice.isEmpty()) {
-						choice = new ArrayList<String>();
-					}
-					choice.add(nodeText.getTextContent());
-					problem.setChoice(choice);
-				default:
-					// 知らないノードは単純に無視する
-					break;
-				}
-			}
-		}
+		this.parseProblem(document);
 	}
 	
 	/**
@@ -263,6 +211,12 @@ public class ProblemSet implements Serializable {
 		return node.getTextContent();
 	}
 	
+	/**
+	 * 自分自身をXMLに書き出します
+	 * 
+	 * @param stream 出力先のストリーム
+	 * @throws IOException
+	 */
 	public void dumpToXml(OutputStream stream) throws IOException {
 		BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(stream));
 		
@@ -293,5 +247,71 @@ public class ProblemSet implements Serializable {
 		}
 		writer.write("</flashmemory>\n");
 		writer.flush();
+	}
+	
+	public void parseProblem() throws SAXException, IOException, ParserConfigurationException {
+		FileInputStream stream = new FileInputStream(this.path);
+		Document document = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(stream);
+		this.parseProblem(document);
+	}
+	
+	/**
+	 * メタデータを読み込み済みの問題について、問題本体を読み込む
+	 * 
+	 */
+	public void parseProblem(Document document) {
+		
+		this.problemList = new ArrayList<Problem>();
+		
+		XPath xpath = XPathFactory.newInstance().newXPath();
+		xpath.setNamespaceContext(nsContext);
+		
+		XPathExpression xpExpression = null;
+		try {
+			xpExpression = xpath.compile("//problem/problemset/problem");
+		} catch (XPathExpressionException e) {
+			// 問題は1つも取得できなかったという事にする
+			Log.d(Constants.LOG_TAG, "Caught XPathExpressionException, continues");
+			return;
+		}
+		
+		NodeList nodeList = null;
+		try {
+			nodeList = (NodeList)xpExpression.evaluate(document, XPathConstants.NODESET);
+		} catch (XPathExpressionException e) {
+			// 問題は1つも取得できなかった
+			Log.d(Constants.LOG_TAG, "Not found any problem element");
+			return;
+		}
+		
+		// 問題を取得できるので、1問ずつparseして保存。
+		for(int i = 0; i < nodeList.getLength(); ++i) {
+			Node nodeProblem = nodeList.item(i);
+			Problem problem = new Problem();
+
+			for(int j = 0; j < nodeProblem.getChildNodes().getLength(); ++j) {
+				Node nodeText = nodeProblem.getChildNodes().item(j);
+				switch(nodeText.getNodeName()) {
+				case "statement":
+					if(problem.getStatement() == null) {
+						problem.setStatement(nodeText.getTextContent());
+					} else {
+						// 既に<statement>は過去に存在している
+						// エラーを出すことも考えたけど、単純に無視するようにする。最初に現れた<statement>のみが有効。
+					}
+					break;
+				case "choice":
+					List<String> choice = problem.getChoice();
+					if(choice.isEmpty()) {
+						choice = new ArrayList<String>();
+					}
+					choice.add(nodeText.getTextContent());
+					problem.setChoice(choice);
+				default:
+					// 知らないノードは単純に無視する
+					break;
+				}
+			}
+		}
 	}
 }
