@@ -1,0 +1,17 @@
+<?xml version="1.0" ?>
+<flashmemory xml:lang="ja" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <metadata>
+    <dc:creator>三井 雄貴</dc:creator>
+    <dc:title>最もシンプルなサンプル問題</dc:title>
+    <dc:created>2014-07-20T15:54+09:00</dc:created>
+  </metadata>
+  <problemset>
+    <problem>
+      <statement>このファイル形式は何？</statement>
+      <choice>HTML</choice>
+      <choice>XML</choice>
+      <choice>CSV</choice>
+      <choice>JPEG</choice>
+    </problem>
+  </problemset>
+</flashmemory>
