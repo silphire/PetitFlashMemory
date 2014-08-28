@@ -4,9 +4,31 @@
     android:layout_height="match_parent"
     tools:context="${relativePackage}.${activityClass}" >
 
-    <ViewFlipper
-        android:id="@+id/question_flipper"
-        android:layout_width="wrap_content"
+    <!-- 問題文 -->
+    <Text 
+        android:layout_width="fill_parent" 
         android:layout_height="wrap_content" />
-
+    
+    <TableLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+        
+        <TableRow>
+            <View />
+            <View />  <!-- 解答1 -->
+            <View />
+        </TableRow>
+        
+        <TableRow>
+            <View />  <!-- 解答2 -->
+            <View />
+            <View />  <!-- 解答3 -->
+        </TableRow>
+        
+        <TableRow>
+            <View />
+            <View />  <!-- 解答4 -->
+            <View />
+        </TableRow>
+    </TableLayout>
 </RelativeLayout>
