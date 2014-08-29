@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.view.View.OnClickListener;
 
 /**
  * 問題を出題していくアクティビティクラス
@@ -11,7 +13,7 @@ import android.util.Log;
  * @author Yuki Mitsui <silphire@gmail.com>
  *
  */
-public class QuestionActivity extends Activity {
+public class QuestionActivity extends Activity implements OnClickListener {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -31,5 +33,10 @@ public class QuestionActivity extends Activity {
 			this.finish();
 			return;
 		}
+	}
+	
+	@Override
+	public void onClick(View view) {
+		// どのボタンを押して解答したかを取得する
 	}
 }
