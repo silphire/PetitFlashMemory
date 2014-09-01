@@ -9,7 +9,7 @@
     <problem>
       <statement>このファイル形式は何？</statement>
       <choice>HTML</choice>
-      <choice>XML</choice>
+      <choice right="true">XML</choice>
       <choice>CSV</choice>
       <choice>JPEG</choice>
     </problem>
