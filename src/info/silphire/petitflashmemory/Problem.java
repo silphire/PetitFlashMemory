@@ -32,6 +32,7 @@ public class Problem implements Serializable {
 	
 	private String statement;
 	private List<String> choice;
+	private String answer;
 	
 	public Problem() {
 		//
@@ -65,6 +66,14 @@ public class Problem implements Serializable {
 		this.choice = choice;
 	}
 	
+	public String getAnswer() {
+		return this.answer;
+	}
+	
+	public void setAnswer(String answer) {
+		this.answer = answer;
+	}
+	
 	public void dumpToXml(OutputStream stream, int nIndent) throws IOException {
 		BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(stream));
 		
@@ -82,7 +91,11 @@ public class Problem implements Serializable {
 		
 		for(String choice : this.getChoice()) {
 			writer.write(prefix);
-			writer.write("  <choice>" + choice + "</choice>\n");
+			if(choice == answer) {	// answer‚ÍList<String> choice‚Ì’†‚Ìˆê—v‘f‚ð•\‚µ‚Ä‚¢‚é‚Í‚¸‚È‚Ì‚Å‚±‚ê‚Å‚æ‚¢
+				writer.write("  <choice answer=\"true\">" + choice + "</choice>\n");
+			} else {
+				writer.write("  <choice>" + choice + "</choice>\n");
+			}
 		}
 		
 		writer.write(prefix);
