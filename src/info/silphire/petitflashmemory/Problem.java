@@ -5,10 +5,12 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.IllegalFormatException;
 import java.util.List;
 
 import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 /**
  * 
@@ -47,7 +49,22 @@ public class Problem implements Serializable {
 	 * @throws IllegalFormatException ReaderÇ©ÇÁÇÃâêÕÇ…é∏îsÇµÇΩéûÇ…ìäÇ∞ÇÁÇÍÇ‹Ç∑ÅB
 	 */
 	public void parse(Node problemNode) throws IllegalFormatException {
-		;
+		this.choice = new ArrayList<String>();
+		
+		for(Node child = problemNode.getFirstChild(); child != null; child = child.getNextSibling()) {
+			if("statement".equals(child.getLocalName())) {
+				this.statement = child.getTextContent();
+			} else if("choice".equals(child.getLocalName())) {
+				Node answerAttr = child.getAttributes().getNamedItem("answer");
+				if(answerAttr != null) {
+					answer = answerAttr.getTextContent();
+				}
+				
+				choice.add(child.getTextContent());
+			} else {
+				// ímÇÁÇ»Ç¢óvëfÇÕñ≥éã
+			}
+		}
 	}
 
 	public String getStatement() {
